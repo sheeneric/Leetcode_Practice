@@ -22,3 +22,6 @@ class Solution {
         
     }
 }
+
+// https://gist.github.com/npryce/4147916
+// https://github.com/pholser/junit-quickcheck
