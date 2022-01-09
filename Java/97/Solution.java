@@ -1,7 +1,4 @@
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Queue;
+import java.util.*;
 
 class Solution {
     public boolean isInterleave(String s1, String s2, String s3) {
@@ -9,24 +6,31 @@ class Solution {
         if ((s1 + s2).length() != s3.length()) {
             return false;
         }
-        Queue<String[]> queue = new ArrayDeque<>();
-        String[] stringSet = new String[]{s1, s2};
-        queue.add(stringSet);
+        Queue<String> queue = new ArrayDeque<>();
+        String strSet = s1 + " " + s2;
+        queue.add(strSet);
 
         while (s3.length() != 0 && !queue.isEmpty()) {
 
-            List<String[]> list = new ArrayList<>();
+            HashSet<String> set = new HashSet<>();
 
             while (!queue.isEmpty()) {
-                list.add(queue.poll());
+                set.add(queue.poll());
             }
 
-            for (String[] strings : list) {
-                if (strings[0].length() > 0 && strings[0].charAt(0) == s3.charAt(0)) {
-                    queue.add(new String[]{strings[0].substring(1), strings[1]}.clone());
-                }
-                if (strings[1].length() > 0 && strings[1].charAt(0) == s3.charAt(0)) {
-                    queue.add(new String[]{strings[0], strings[1].substring(1)}.clone());
+            for (String strings : set) {
+                String[] stringSet = strings.split(" ");
+                if (stringSet.length == 1) {
+                    if (stringSet[0].charAt(0) == s3.charAt(0)) {
+                        queue.add(stringSet[0].substring(1));
+                    }
+                } else {
+                    if (stringSet[0].length() > 0 && stringSet[0].charAt(0) == s3.charAt(0)) {
+                        queue.add(stringSet[0].substring(1) + " " + stringSet[1]);
+                    }
+                    if (stringSet[1].length() > 0 && stringSet[1].charAt(0) == s3.charAt(0)) {
+                        queue.add(stringSet[0] + " " + stringSet[1].substring(1));
+                    }
                 }
             }
 
@@ -39,5 +43,3 @@ class Solution {
         return s3.length() == 0;
     }
 }
-
-//Failed with time limit exceeded
